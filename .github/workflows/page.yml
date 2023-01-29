@@ -1,12 +1,13 @@
 name: Pages
 
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
 permissions:
   contents: write
 
 on:
   push:
     branches:
-      - main  # default branch
+      - master  # default branch
 
 jobs:
   pages:
