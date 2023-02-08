@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="軟體魔術師的筆記本">
 <meta property="og:description" content="問題當我建置好 ci&#x2F;cd 環境時，有一天發現 build 階段發生錯誤，我看一下錯誤訊息看看可不可以在我電腦環境中發生一樣的錯誤 於是當我 docker build image 時，錯誤圖片如下  這個錯誤是因為 apt-get 時，由於 php 有更新所以導致的錯誤訊息，因為有異動到檔案導致 docker build 錯誤 解決方式在 docker image 新增兩條指令，避免遇到">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://blog.magicchou.com/issue.jpg">
+<meta property="og:image" content="https://blog.magicchou.com/2023/02/06/docker-image-php-file-modify/issue.jpg">
 <meta property="article:published_time" content="2023-02-06T10:42:23.000Z">
-<meta property="article:modified_time" content="2023-02-08T14:26:41.992Z">
+<meta property="article:modified_time" content="2023-02-08T14:29:25.278Z">
 <meta property="article:author" content="Yu-Hsien Chou">
 <meta property="article:tag" content="docker,php">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://blog.magicchou.com/issue.jpg">
+<meta name="twitter:image" content="https://blog.magicchou.com/2023/02/06/docker-image-php-file-modify/issue.jpg">
   
   
   
@@ -278,7 +278,7 @@
                 
                 <h1 id="問題"><a href="#問題" class="headerlink" title="問題"></a>問題</h1><p>當我建置好 ci&#x2F;cd 環境時，有一天發現 build 階段發生錯誤，我看一下錯誤訊息看看可不可以在我電腦環境中發生一樣的錯誤</p>
 <p>於是當我 docker build image 時，錯誤圖片如下</p>
-<p><img src="/issue.jpg" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/06/docker-image-php-file-modify/issue.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>這個錯誤是因為 apt-get 時，由於 php 有更新所以導致的錯誤訊息，因為有異動到檔案導致 docker build 錯誤</p>
 <h1 id="解決方式"><a href="#解決方式" class="headerlink" title="解決方式"></a>解決方式</h1><p>在 docker image 新增兩條指令，避免遇到 apt-get 時，更新依賴套件並異動設定檔案時發生錯誤導致 build 失敗</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 修正 upgrade 錯誤</span><br><span class="hljs-comment"># https://github.com/phusion/baseimage-docker/issues/542</span><br><span class="hljs-built_in">RUN</span> echo <span class="hljs-string">&#x27;DPkg::options &#123; &quot;--force-confdef&quot;; &#125;;&#x27;</span> &gt;&gt; /etc/apt/apt.conf<br><span class="hljs-built_in">RUN</span> apt-<span class="hljs-built_in">get</span><span class="hljs-built_in"> upgrade </span>-y<br></code></pre></td></tr></table></figure>
