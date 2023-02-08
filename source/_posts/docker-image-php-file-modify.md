@@ -11,7 +11,7 @@ tags: docker,php
 
 於是當我 docker build image 時，錯誤圖片如下
 
-![](issue.jpg)
+![](/2023/02/06/docker-image-php-file-modify/issue.jpg)
 
 這個錯誤是因為 apt-get 時，由於 php 有更新所以導致的錯誤訊息，因為有異動到檔案導致 docker build 錯誤
 
