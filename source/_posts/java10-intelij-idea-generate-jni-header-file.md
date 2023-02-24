@@ -22,9 +22,11 @@ categories: java
 Name: Generate Header File
 **Tool Settings**<br />
 
+```
 Program: $JDKPath$/bin/javac
 Arguments: -h ./native -sourcepath $OutputPath$ -d $OutputPath$ $FileDir$\$FileName$
 Working directory: $ProjectFileDir$
+```
 
 ![](/2023/02/25/java10-intelij-idea-generate-jni-header-file/003.png)
 
