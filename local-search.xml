@@ -8,9 +8,25 @@
     <link href="/2023/02/25/java10-intelij-idea-generate-jni-header-file/"/>
     <url>/2023/02/25/java10-intelij-idea-generate-jni-header-file/</url>
     
-    <content type="html"><![CDATA[<p>使用命令提示字元產生JNI文件麻煩又容易出錯，可以使用 Intelij IDEA 提供的 Extenrnal Tools 來幫助我們快速產生 JNI Header File</p><ol><li>File –&gt; Setting</li></ol><p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/001.png"></p><ol start="2"><li>Tools –&gt; Extenrnal Tools 點擊 + 號 新增</li></ol><p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/002.png"></p><ol start="3"><li>依序輸入 輸入完畢後按下 OK</li></ol><p>Name: Generate Header File<br><strong>Tool Settings</strong><br /></p><p>Program: $JDKPath$&#x2F;bin&#x2F;javac<br>Arguments: -h .&#x2F;native -sourcepath $OutputPath$ -d $OutputPath$ $FileDir$$FileName$<br>Working directory: $ProjectFileDir$</p><p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/003.png"></p><ol start="4"><li>最後 到你要產生JNI的*.JAVA檔案 按下滑鼠右鍵 找到 <strong>Extenrnal Tools</strong> 應該會找到一個 <strong>Generate Header File</strong> 這樣標頭檔案就會出現在專案目錄中的 <strong>native</strong> 資料夾囉</li></ol><p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/004.png"></p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="https://juejin.cn/post/6997006784921600036">IDEA一键快速生成JNI头文件（可直接复制使用） JDK8 以前可以用</a></p>]]></content>
+    <content type="html"><![CDATA[<p>使用命令提示字元產生JNI文件麻煩又容易出錯，可以使用 Intelij IDEA 提供的 Extenrnal Tools 來幫助我們快速產生 JNI Header File</p><h2 id="操作說明"><a href="#操作說明" class="headerlink" title="操作說明"></a>操作說明</h2><ol><li>File –&gt; Setting</li></ol><p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/001.png"></p><ol start="2"><li>Tools –&gt; Extenrnal Tools 點擊 + 號 新增</li></ol><p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/002.png"></p><ol start="3"><li>依序輸入 輸入完畢後按下 OK</li></ol><p>Name: Generate Header File<br><strong>Tool Settings</strong><br /></p><p>Program: $JDKPath$&#x2F;bin&#x2F;javac<br>Arguments: -h .&#x2F;native -sourcepath $OutputPath$ -d $OutputPath$ $FileDir$$FileName$<br>Working directory: $ProjectFileDir$</p><p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/003.png"></p><ol start="4"><li>最後 到你要產生JNI的*.JAVA檔案 按下滑鼠右鍵 找到 <strong>Extenrnal Tools</strong> 應該會找到一個 <strong>Generate Header File</strong> 這樣標頭檔案就會出現在專案目錄中的 <strong>native</strong> 資料夾囉</li></ol><p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/004.png"></p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="https://juejin.cn/post/6997006784921600036">IDEA一键快速生成JNI头文件（可直接复制使用） JDK8 以前可以用</a><br><a href="https://stackoverflow.com/questions/50352098/javah-missing-after-jdk-install">javah missing after JDK install</a><br><a href="https://openjdk.org/jeps/313">JEP 313: Remove the Native-header Generation Tool (javah)</a></p>]]></content>
     
     
+    <categories>
+      
+      <category>java</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>java</tag>
+      
+      <tag>intelij</tag>
+      
+      <tag>jni</tag>
+      
+    </tags>
     
   </entry>
   
@@ -24,10 +40,18 @@
     <content type="html"><![CDATA[<h1 id="問題"><a href="#問題" class="headerlink" title="問題"></a>問題</h1><p>當我建置好 ci&#x2F;cd 環境時，有一天發現 build 階段發生錯誤，我看一下錯誤訊息看看可不可以在我電腦環境中發生一樣的錯誤</p><p>於是當我 docker build image 時，錯誤圖片如下</p><p><img src="/2023/02/06/docker-image-php-file-modify/issue.jpg"></p><p>這個錯誤是因為 apt-get 時，由於 php 有更新所以導致的錯誤訊息，因為有異動到檔案導致 docker build 錯誤</p><h1 id="解決方式"><a href="#解決方式" class="headerlink" title="解決方式"></a>解決方式</h1><p>在 docker image 新增兩條指令，避免遇到 apt-get 時，更新依賴套件並異動設定檔案時發生錯誤導致 build 失敗</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 修正 upgrade 錯誤</span><br><span class="hljs-comment"># https://github.com/phusion/baseimage-docker/issues/542</span><br><span class="hljs-built_in">RUN</span> echo <span class="hljs-string">&#x27;DPkg::options &#123; &quot;--force-confdef&quot;; &#125;;&#x27;</span> &gt;&gt; /etc/apt/apt.conf<br><span class="hljs-built_in">RUN</span> apt-<span class="hljs-built_in">get</span><span class="hljs-built_in"> upgrade </span>-y<br></code></pre></td></tr></table></figure><h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="https://github.com/phusion/baseimage-docker/issues/542">Failed to run apt upgrade when building based on latest image</a></p>]]></content>
     
     
+    <categories>
+      
+      <category>php</category>
+      
+    </categories>
+    
     
     <tags>
       
-      <tag>docker,php</tag>
+      <tag>docker</tag>
+      
+      <tag>php</tag>
       
     </tags>
     
