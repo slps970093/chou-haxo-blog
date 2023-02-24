@@ -16,24 +16,27 @@
   <meta name="author" content="Yu-Hsien Chou">
   <meta name="keywords" content="攝影、3C、軟體開發">
   
-    <meta name="description" content="問題當我建置好 ci&#x2F;cd 環境時，有一天發現 build 階段發生錯誤，我看一下錯誤訊息看看可不可以在我電腦環境中發生一樣的錯誤 於是當我 docker build image 時，錯誤圖片如下  這個錯誤是因為 apt-get 時，由於 php 有更新所以導致的錯誤訊息，因為有異動到檔案導致 docker build 錯誤 解決方式在 docker image 新增兩條指令，避免遇到">
+    <meta name="description" content="使用命令提示字元產生JNI文件麻煩又容易出錯，可以使用 Intelij IDEA 提供的 Extenrnal Tools 來幫助我們快速產生 JNI Header File  File –&gt; Setting    Tools –&gt; Extenrnal Tools 點擊 + 號 新增    依序輸入 輸入完畢後按下 OK  Name: Generate Header FileTool S">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解決 docker image 在 build 階段遇到檔案異動的問題處理方式">
-<meta property="og:url" content="https://blog.magicchou.com/2023/02/06/docker-image-php-file-modify/index.html">
+<meta property="og:title" content="Java 10 在 Intelij IDEA 快速產生 JNI Header File">
+<meta property="og:url" content="https://blog.magicchou.com/2023/02/25/java10-intelij-idea-generate-jni-header-file/index.html">
 <meta property="og:site_name" content="軟體魔術師的筆記本">
-<meta property="og:description" content="問題當我建置好 ci&#x2F;cd 環境時，有一天發現 build 階段發生錯誤，我看一下錯誤訊息看看可不可以在我電腦環境中發生一樣的錯誤 於是當我 docker build image 時，錯誤圖片如下  這個錯誤是因為 apt-get 時，由於 php 有更新所以導致的錯誤訊息，因為有異動到檔案導致 docker build 錯誤 解決方式在 docker image 新增兩條指令，避免遇到">
+<meta property="og:description" content="使用命令提示字元產生JNI文件麻煩又容易出錯，可以使用 Intelij IDEA 提供的 Extenrnal Tools 來幫助我們快速產生 JNI Header File  File –&gt; Setting    Tools –&gt; Extenrnal Tools 點擊 + 號 新增    依序輸入 輸入完畢後按下 OK  Name: Generate Header FileTool S">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://blog.magicchou.com/2023/02/06/docker-image-php-file-modify/issue.jpg">
-<meta property="article:published_time" content="2023-02-06T10:42:23.000Z">
-<meta property="article:modified_time" content="2023-02-24T16:33:40.281Z">
+<meta property="og:image" content="https://blog.magicchou.com/2023/02/25/java10-intelij-idea-generate-jni-header-file/001.png">
+<meta property="og:image" content="https://blog.magicchou.com/2023/02/25/java10-intelij-idea-generate-jni-header-file/002.png">
+<meta property="og:image" content="https://blog.magicchou.com/2023/02/25/java10-intelij-idea-generate-jni-header-file/003.png">
+<meta property="og:image" content="https://blog.magicchou.com/2023/02/25/java10-intelij-idea-generate-jni-header-file/004.png">
+<meta property="article:published_time" content="2023-02-25T00:13:52.000Z">
+<meta property="article:modified_time" content="2023-02-24T16:33:40.285Z">
 <meta property="article:author" content="Yu-Hsien Chou">
-<meta property="article:tag" content="docker,php">
+<meta property="article:tag" content="攝影、3C、軟體開發">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://blog.magicchou.com/2023/02/06/docker-image-php-file-modify/issue.jpg">
+<meta name="twitter:image" content="https://blog.magicchou.com/2023/02/25/java10-intelij-idea-generate-jni-header-file/001.png">
   
   
   
-  <title>解決 docker image 在 build 階段遇到檔案異動的問題處理方式 - 軟體魔術師的筆記本</title>
+  <title>Java 10 在 Intelij IDEA 快速產生 JNI Header File - 軟體魔術師的筆記本</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +202,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="解決 docker image 在 build 階段遇到檔案異動的問題處理方式"></span>
+            <span id="subtitle" data-typed-text="Java 10 在 Intelij IDEA 快速產生 JNI Header File"></span>
           
         </div>
 
@@ -210,8 +213,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-06 10:42" pubdate>
-          2023年2月6日 上午
+        <time datetime="2023-02-25 00:13" pubdate>
+          2023年2月25日 凌晨
         </time>
       </span>
     
@@ -222,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          457 字
+          453 字
         
       </span>
     
@@ -271,19 +274,31 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">解決 docker image 在 build 階段遇到檔案異動的問題處理方式</h1>
+            <h1 style="display: none">Java 10 在 Intelij IDEA 快速產生 JNI Header File</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="問題"><a href="#問題" class="headerlink" title="問題"></a>問題</h1><p>當我建置好 ci&#x2F;cd 環境時，有一天發現 build 階段發生錯誤，我看一下錯誤訊息看看可不可以在我電腦環境中發生一樣的錯誤</p>
-<p>於是當我 docker build image 時，錯誤圖片如下</p>
-<p><img src="/2023/02/06/docker-image-php-file-modify/issue.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>這個錯誤是因為 apt-get 時，由於 php 有更新所以導致的錯誤訊息，因為有異動到檔案導致 docker build 錯誤</p>
-<h1 id="解決方式"><a href="#解決方式" class="headerlink" title="解決方式"></a>解決方式</h1><p>在 docker image 新增兩條指令，避免遇到 apt-get 時，更新依賴套件並異動設定檔案時發生錯誤導致 build 失敗</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 修正 upgrade 錯誤</span><br><span class="hljs-comment"># https://github.com/phusion/baseimage-docker/issues/542</span><br><span class="hljs-built_in">RUN</span> echo <span class="hljs-string">&#x27;DPkg::options &#123; &quot;--force-confdef&quot;; &#125;;&#x27;</span> &gt;&gt; /etc/apt/apt.conf<br><span class="hljs-built_in">RUN</span> apt-<span class="hljs-built_in">get</span><span class="hljs-built_in"> upgrade </span>-y<br></code></pre></td></tr></table></figure>
-
-<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a target="_blank" rel="noopener" href="https://github.com/phusion/baseimage-docker/issues/542">Failed to run apt upgrade when building based on latest image</a></p>
+                <p>使用命令提示字元產生JNI文件麻煩又容易出錯，可以使用 Intelij IDEA 提供的 Extenrnal Tools 來幫助我們快速產生 JNI Header File</p>
+<ol>
+<li>File –&gt; Setting</li>
+</ol>
+<p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/001.png" srcset="/img/loading.gif" lazyload></p>
+<ol start="2">
+<li>Tools –&gt; Extenrnal Tools 點擊 + 號 新增</li>
+</ol>
+<p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/002.png" srcset="/img/loading.gif" lazyload></p>
+<ol start="3">
+<li>依序輸入 輸入完畢後按下 OK</li>
+</ol>
+<p>Name: Generate Header File<br><strong>Tool Settings</strong><br /></p>
+<p>Program: $JDKPath$&#x2F;bin&#x2F;javac<br>Arguments: -h .&#x2F;native -sourcepath $OutputPath$ -d $OutputPath$ $FileDir$$FileName$<br>Working directory: $ProjectFileDir$</p>
+<p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/003.png" srcset="/img/loading.gif" lazyload></p>
+<ol start="4">
+<li>最後 到你要產生JNI的*.JAVA檔案 按下滑鼠右鍵 找到 <strong>Extenrnal Tools</strong> 應該會找到一個 <strong>Generate Header File</strong> 這樣標頭檔案就會出現在專案目錄中的 <strong>native</strong> 資料夾囉</li>
+</ol>
+<p><img src="/2023/02/25/java10-intelij-idea-generate-jni-header-file/004.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6997006784921600036">IDEA一键快速生成JNI头文件（可直接复制使用） JDK8 以前可以用</a></p>
 
                 
               </div>
@@ -293,13 +308,6 @@
               <div class="post-metas my-3">
   
   
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/docker-php/">#docker,php</a>
-      
-    </div>
-  
 </div>
 
 
@@ -308,8 +316,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>解決 docker image 在 build 階段遇到檔案異動的問題處理方式</div>
-      <div>https://blog.magicchou.com/2023/02/06/docker-image-php-file-modify/</div>
+      <div>Java 10 在 Intelij IDEA 快速產生 JNI Header File</div>
+      <div>https://blog.magicchou.com/2023/02/25/java10-intelij-idea-generate-jni-header-file/</div>
     </div>
     <div class="license-meta">
       
@@ -321,7 +329,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>發布於</div>
-          <div>2023年2月6日</div>
+          <div>2023年2月25日</div>
         </div>
       
       
@@ -353,15 +361,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/25/java10-intelij-idea-generate-jni-header-file/" title="Java 10 在 Intelij IDEA 快速產生 JNI Header File">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Java 10 在 Intelij IDEA 快速產生 JNI Header File</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2023/02/06/docker-image-php-file-modify/" title="解決 docker image 在 build 階段遇到檔案異動的問題處理方式">
+                        <span class="hidden-mobile">解決 docker image 在 build 階段遇到檔案異動的問題處理方式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
