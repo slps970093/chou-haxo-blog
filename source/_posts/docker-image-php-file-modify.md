@@ -2,7 +2,8 @@
 layout: blog
 title: 解決 docker image 在 build 階段遇到檔案異動的問題處理方式
 date: 2023-02-06 10:42:23
-tags: docker,php
+tags: [docker,php]
+categories: php
 ---
 
 # 問題

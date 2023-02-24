@@ -2,10 +2,12 @@
 layout: blog
 title: Java 10 在 Intelij IDEA 快速產生 JNI Header File
 date: 2023-02-25 00:13:52
-tags:
+tags: [java, intelij, jni]
+categories: java
 ---
-
 使用命令提示字元產生JNI文件麻煩又容易出錯，可以使用 Intelij IDEA 提供的 Extenrnal Tools 來幫助我們快速產生 JNI Header File
+
+## 操作說明
 
 1. File --> Setting
 
@@ -33,4 +35,5 @@ Working directory: $ProjectFileDir$
 ## 參考資料
 
 [IDEA一键快速生成JNI头文件（可直接复制使用） JDK8 以前可以用](https://juejin.cn/post/6997006784921600036)
-
+[javah missing after JDK install](https://stackoverflow.com/questions/50352098/javah-missing-after-jdk-install)
+[JEP 313: Remove the Native-header Generation Tool (javah)](https://openjdk.org/jeps/313)
