@@ -2,9 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.magicchou.com/2023/05/24/nuxt3-docker-traefik-tutorial/</loc>
+    
+    <lastmod>2023-05-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.magicchou.com/2023/02/06/docker-image-php-file-modify/</loc>
     
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -13,7 +22,7 @@
   <url>
     <loc>https://blog.magicchou.com/2023/02/25/java10-intelij-idea-generate-jni-header-file/</loc>
     
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,7 +31,7 @@
 
   <url>
     <loc>https://blog.magicchou.com/</loc>
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -30,35 +39,49 @@
   
   <url>
     <loc>https://blog.magicchou.com/tags/docker/</loc>
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.magicchou.com/tags/php/</loc>
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.magicchou.com/tags/java/</loc>
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.magicchou.com/tags/intelij/</loc>
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.magicchou.com/tags/jni/</loc>
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.magicchou.com/tags/nuxt3/</loc>
+    <lastmod>2023-05-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.magicchou.com/tags/traefik/</loc>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -67,14 +90,14 @@
   
   <url>
     <loc>https://blog.magicchou.com/categories/php/</loc>
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.magicchou.com/categories/java/</loc>
-    <lastmod>2023-02-24</lastmod>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

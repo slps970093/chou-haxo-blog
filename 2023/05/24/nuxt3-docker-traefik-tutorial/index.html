@@ -1,0 +1,675 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-TW" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yu-Hsien Chou">
+  <meta name="keywords" content="攝影、3C、軟體開發">
+  
+    <meta name="description" content="trefik v2 設定&#x2F;etc&#x2F;traefik.yml  12345678910111213141516171819202122232425262728293031entryPoints:  web:    address: &quot;:80&quot;  websecure:    address: &quot;:443&quot;api:  dashboard: tru">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nuxt 3 在 docker 建置開發環境，並搭配 HMR">
+<meta property="og:url" content="https://blog.magicchou.com/2023/05/24/nuxt3-docker-traefik-tutorial/index.html">
+<meta property="og:site_name" content="軟體魔術師的筆記本">
+<meta property="og:description" content="trefik v2 設定&#x2F;etc&#x2F;traefik.yml  12345678910111213141516171819202122232425262728293031entryPoints:  web:    address: &quot;:80&quot;  websecure:    address: &quot;:443&quot;api:  dashboard: tru">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2023-05-24T18:26:49.000Z">
+<meta property="article:modified_time" content="2023-05-24T14:15:28.700Z">
+<meta property="article:author" content="Yu-Hsien Chou">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="nuxt3">
+<meta property="article:tag" content="traefik">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Nuxt 3 在 docker 建置開發環境，並搭配 HMR - 軟體魔術師的筆記本</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.magicchou.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":"G-GD0S749LQ8","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-GD0S749LQ8', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>軟體魔法師的筆記本</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首頁</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>歸檔</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分類</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>標籤</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>關於</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Nuxt 3 在 docker 建置開發環境，並搭配 HMR"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-24 18:26" pubdate>
+          2023年5月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          33 分鐘
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Nuxt 3 在 docker 建置開發環境，並搭配 HMR</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="trefik-v2-設定"><a href="#trefik-v2-設定" class="headerlink" title="trefik v2 設定"></a>trefik v2 設定</h2><p><strong>&#x2F;etc&#x2F;traefik.yml</strong> </p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">entryPoints:</span><br><span class="hljs-symbol">  web:</span><br><span class="hljs-symbol">    address:</span> <span class="hljs-string">&quot;:80&quot;</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">  websecure:</span><br><span class="hljs-symbol">    address:</span> <span class="hljs-string">&quot;:443&quot;</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">api:</span><br><span class="hljs-symbol">  dashboard:</span> true<br><span class="hljs-symbol">  insecure:</span> true<br><span class="hljs-symbol"></span><br><span class="hljs-symbol">tls:</span><br><span class="hljs-symbol">  certificates:</span><br>    - certFile: <span class="hljs-string">&quot;/certificates/lara-media-web-local/domain.cert&quot;</span><br><span class="hljs-symbol">      keyFile:</span> <span class="hljs-string">&quot;/certificates/lara-media-web-local/domain.key&quot;</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">http:</span><br><span class="hljs-symbol">  middlewares:</span><br>    test-redirectscheme:<br><span class="hljs-symbol">      redirectScheme:</span><br><span class="hljs-symbol">        scheme:</span> https<br><span class="hljs-symbol"></span><br><span class="hljs-symbol">log:</span><br><span class="hljs-symbol">  filePath:</span> <span class="hljs-string">&quot;/logs/traefik.log&quot;</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">accessLog:</span><br><span class="hljs-symbol">  filePath:</span> <span class="hljs-string">&quot;/logs/access.log&quot;</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">providers:</span><br><span class="hljs-symbol">  docker:</span><br><span class="hljs-symbol">    endpoint:</span> <span class="hljs-string">&quot;unix:///var/run/docker.sock&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+<h2 id="nuxt-3-專案設定"><a href="#nuxt-3-專案設定" class="headerlink" title="nuxt 3 專案設定"></a>nuxt 3 專案設定</h2><p>這邊主要有幾個重點</p>
+<ol>
+<li>將 npm run dev 修改為可以走 80 (可選&#x2F;若不修改需指定loadbalancer.server.port 80–&gt; 你指定的 PORT)</li>
+<li>HMR 指定成 websocket 模式 (port 為 22300 可自訂)</li>
+</ol>
+<h3 id="教學"><a href="#教學" class="headerlink" title="教學"></a>教學</h3><ol>
+<li><p>填寫 <strong>Dockerfile</strong> 這邊我用我自己寫的當範本<br>我將工作目錄設定在 <strong>&#x2F;var&#x2F;www&#x2F;html</strong></p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">FROM <span class="hljs-keyword">node</span><span class="hljs-title">:18</span>.<span class="hljs-number">16</span>-alpine3.<span class="hljs-number">16</span><br><br>WORKDIR /var/www/html<br>RUN npm install -g typescript ts-<span class="hljs-keyword">node</span> <span class="hljs-title">ts-node-dev</span><br><span class="hljs-comment"># https://stackoverflow.com/questions/67903114/javascript-heap-out-of-memory-in-docker-image-run</span><br>ENV <span class="hljs-attr">NODE_OPTIONS=</span>--<span class="hljs-attr">max_old_space_size=</span><span class="hljs-number">2048</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>填寫 <strong>docker-compose.yml</strong></p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">version</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;3.0&quot;</span><br><br><span class="hljs-attribute">services</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">nuxt-server</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">build</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-attribute">context</span><span class="hljs-punctuation">:</span> <span class="hljs-string">docker/image/dev</span><br>    <span class="hljs-attribute">volumes</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">.:/var/www/html</span><br>      <span class="hljs-comment"># https://dev.to/nklsw/how-to-create-a-dockerized-nuxt-3-development-environment-1p0a</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/www/html/node_modules</span><br>    <span class="hljs-attribute">networks</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik-network</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">web-director-network</span><br>    <span class="hljs-attribute">command</span><span class="hljs-punctuation">:</span> <span class="hljs-string">sh -c &quot;npm ci &amp;&amp;npm run dev-container-traefik&quot;</span><br>    <span class="hljs-attribute">expose</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">22300</span><br>    <span class="hljs-attribute">labels</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;traefik.docker.network=traefik-network&quot;</span><br>      <span class="hljs-comment"># 首頁</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3.service=web-director-nuxt3</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3.rule=Host(`web-director.local`)</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.services.web-director-nuxt3.loadbalancer.server.port=80</span><br>      <span class="hljs-comment"># 對應 /etc/traefik.yml 裡面的 entrypoint 要告訴 traefik 進入點</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3.entrypoints=web </span><br>      <span class="hljs-comment"># 首頁 https</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3-https.service=web-director-nuxt3-https</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3-https.entrypoints=websecure</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3-https.rule=Host(`web-director.local`)</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.services.web-director-nuxt3-https.loadbalancer.server.port=80</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3-https.tls=true</span><br>      <span class="hljs-comment"># HMR Support</span><br>      <span class="hljs-comment"># https://github.com/nuxt/nuxt/issues/12748#issuecomment-1397234718</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3-vitesocket.service=web-director-nuxt3-vitesocket</span><br>      <span class="hljs-comment"># 由於 hmr port 是 22300 所以要轉</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.services.web-director-nuxt3-vitesocket.loadbalancer.server.port=22300</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3-vitesocket.rule=Host(`web-director.local`) &amp;&amp; PathPrefix(`/_nuxt/hmr/`)</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3-vitesocket.entrypoints=web,websecure</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik.http.routers.web-director-nuxt3-vitesocket.tls=true</span><br><br><span class="hljs-attribute">networks</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">web-director-network</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">driver</span><span class="hljs-punctuation">:</span> <span class="hljs-string">bridge</span><br>  <span class="hljs-attribute">traefik-network</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">external</span><span class="hljs-punctuation">:</span> <span class="hljs-string">true</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改 <strong>nuxt.config.ts</strong> 增加下面的</p>
+</li>
+</ol>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">vite</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&#123;</span><br>    <span class="hljs-attribute">server</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&#123;</span><br>        <span class="hljs-attribute">hmr</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&#123;</span><br>            <span class="hljs-attribute">protocol</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;wss&#x27;,</span><br>            <span class="hljs-attribute">port</span><span class="hljs-punctuation">:</span> <span class="hljs-string">22300,</span><br>            <span class="hljs-attribute">clientPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">443,    // 用戶指定走的 port</span><br>            <span class="hljs-attribute">path</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;hmr/&#x27;,</span><br>            <span class="hljs-attribute">timeout</span><span class="hljs-punctuation">:</span> <span class="hljs-string">3,</span><br>        &#125;<br>    &#125;<br>&#125;,<br></code></pre></td></tr></table></figure>
+<p><strong>完整範本</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs css">export default defineNuxtConfig(&#123;<br>    modules: [<br>        <span class="hljs-string">&#x27;@pinia/nuxt&#x27;</span>,<br>        <span class="hljs-string">&#x27;@pinia-plugin-persistedstate/nuxt&#x27;</span>,<br>        <span class="hljs-string">&#x27;@nuxtjs/i18n&#x27;</span>,<br>    ],<br>    runtimeConfig: &#123;<br>        public: &#123;<br>            API_FRONTEND_DOMAIN: ( process.env.API_FRONTEND_DOMAIN ?? <span class="hljs-string">&quot;http://api.frontend.ezlive.local&quot;</span>),<br>            API_ADMIN_DOMAIN: ( process.env.API_ADMIN_DOMAIN ?? <span class="hljs-string">&quot;http://api.admin.ezlive.local&quot;</span>),<br>            API_DOMAIN: ( process.env.API_DOMAIN ?? <span class="hljs-string">&quot;http://api-ezlive.local&quot;</span>),<br>            LIVE_SOCKET_IO_DOMAIN: ( process.env.LIVE_SOCKET_IO_DOMAIN ?? <span class="hljs-string">&quot;http://localhost:8888&quot;</span> )<br>        &#125;<br>    &#125;,<br>    vite: &#123;<br>        server: &#123;<br>            hmr: &#123;<br>                protocol: <span class="hljs-string">&#x27;wss&#x27;</span>,<br>                port: <span class="hljs-number">22300</span>,        // 對外PORT<br>                clientPort: <span class="hljs-number">443</span>,    // 用戶端連結 PORT<br>                path: <span class="hljs-string">&#x27;hmr/&#x27;</span>,<br>                timeout: <span class="hljs-number">3</span>,<br>            &#125;<br>        &#125;<br>    &#125;,<br>&#125;)<br><br></code></pre></td></tr></table></figure>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://dev.to/nklsw/how-to-create-a-dockerized-nuxt-3-development-environment-1p0a">How to create a dockerized Nuxt 3 development environment</a><br><a target="_blank" rel="noopener" href="https://www.baeldung.com/ops/docker-exclude-sub-folder-when-adding-volume">Exclude a Sub-Folder When Adding a Volume to Docker</a><br><a target="_blank" rel="noopener" href="https://github.com/nuxt/nuxt/issues/12748#issuecomment-1397234718">Nuxt development server continiously restarts with –https</a><br><a target="_blank" rel="noopener" href="https://nuxt.com/docs/api/configuration/nuxt-config#nuxt-configuration-reference">Nuxt Configuration Reference</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/docker/">#docker</a>
+      
+        <a href="/tags/nuxt3/">#nuxt3</a>
+      
+        <a href="/tags/traefik/">#traefik</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Nuxt 3 在 docker 建置開發環境，並搭配 HMR</div>
+      <div>https://blog.magicchou.com/2023/05/24/nuxt3-docker-traefik-tutorial/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yu-Hsien Chou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>發布於</div>
+          <div>2023年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>許可協議</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/25/java10-intelij-idea-generate-jni-header-file/" title="Java 10 在 Intelij IDEA 快速產生 JNI Header File">
+                        <span class="hidden-mobile">Java 10 在 Intelij IDEA 快速產生 JNI Header File</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目錄</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜尋</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">關鍵字</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允許 JavaScript 運行的環境下瀏覽效果更佳</div>
+  </noscript>
+</body>
+</html>
